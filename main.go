@@ -5,6 +5,7 @@ import (
 	"aoc-2021/v2/day2"
 	"aoc-2021/v2/day3"
 	"aoc-2021/v2/day4"
+	"aoc-2021/v2/day5"
 	"fmt"
 )
 
@@ -24,4 +25,8 @@ func main() {
 	fmt.Println("Day4")
 	fmt.Println(day4.Part1())
 	fmt.Println(day4.Part2())
+
+	fmt.Println("Day5")
+	fmt.Println(day5.Part1())
+	fmt.Println(day5.Part2())
 }
