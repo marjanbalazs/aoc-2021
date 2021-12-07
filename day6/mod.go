@@ -2,7 +2,6 @@ package day6
 
 import (
 	util "aoc-2021/v2/utils"
-	"fmt"
 	"log"
 	"strconv"
 	"strings"
@@ -16,7 +15,6 @@ type LanternFish struct {
 
 func Part1() int {
 	intervals := strings.Split(line[0], ",")
-	fmt.Println(len(intervals))
 	lanternfish := []LanternFish{}
 	for _, interval := range intervals {
 		val, err := strconv.Atoi(interval)
@@ -43,7 +41,6 @@ func Part1() int {
 
 func Part2() int {
 	intervals := strings.Split(line[0], ",")
-	fmt.Println(len(intervals))
 	lanternfish := []int{}
 	for _, interval := range intervals {
 		val, err := strconv.Atoi(interval)
@@ -53,11 +50,9 @@ func Part2() int {
 		lanternfish = append(lanternfish, val)
 	}
 	fishIntervalArray := make([]int, 9)
-	fmt.Println(lanternfish)
 	for _, fish := range lanternfish {
 		fishIntervalArray[fish]++
 	}
-	fmt.Println(fishIntervalArray)
 	for i := 0; i < 256; i++ {
 		newBred := fishIntervalArray[0]
 		fishIntervalArray[0] = fishIntervalArray[1]
