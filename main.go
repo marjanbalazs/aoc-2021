@@ -2,6 +2,7 @@ package main
 
 import (
 	"aoc-2021/v2/day1"
+	"aoc-2021/v2/day10"
 	"aoc-2021/v2/day2"
 	"aoc-2021/v2/day3"
 	"aoc-2021/v2/day4"
@@ -9,6 +10,7 @@ import (
 	"aoc-2021/v2/day6"
 	"aoc-2021/v2/day7"
 	"aoc-2021/v2/day8"
+	"aoc-2021/v2/day9"
 	"fmt"
 )
 
@@ -44,4 +46,12 @@ func main() {
 	fmt.Println("Day8")
 	fmt.Println(day8.Part1())
 	fmt.Println(day8.Part2())
+
+	fmt.Println("Day9")
+	fmt.Println(day9.Part1())
+	fmt.Println(day9.Part2())
+
+	fmt.Println("Day10")
+	fmt.Println(day10.Part1())
+	fmt.Println(day10.Part2())
 }
