@@ -2,27 +2,27 @@ package day12
 
 import (
 	util "aoc-2021/v2/utils"
-	"encoding/json"
-	"fmt"
 	"strings"
 	"unicode"
 )
 
 var lines = util.ReadFile("./day12/input.txt")
 
-func prettyPrint(v interface{}) (err error) {
-	b, err := json.MarshalIndent(v, "", "  ")
-	if err == nil {
-		fmt.Println(string(b))
-	}
-	return
-}
-
 type Cave struct {
 	neighbours map[string]bool
 }
 
 type CaveStructure map[string]Cave
+
+func findOccurances(s string, arr []string) int {
+	cntr := 0
+	for _, elem := range arr {
+		if elem == s {
+			cntr += 1
+		}
+	}
+	return cntr
+}
 
 func isUpper(s string) bool {
 	for _, r := range s {
@@ -100,10 +100,78 @@ func seekEnd(currCave string, caves CaveStructure, path []string, endPaths [][]s
 	return endPaths
 }
 
+// This could be made prettier by passing a conditiong checker function
+func seekEndWithDuplicate(currCave string, duplicate string, caves CaveStructure, path []string, endPaths [][]string) [][]string {
+	for key := range caves[currCave].neighbours {
+		switch key {
+		case "end":
+			{
+				endPath := []string{}
+				for _, v := range path {
+					endPath = append(endPath, v)
+				}
+				endPath = append(endPath, key)
+				endPaths = append(endPaths, endPath)
+				break
+			}
+		case "start":
+			{
+				break
+			}
+		default:
+			{
+				occurances := findOccurances(key, path)
+				secondChance := occurances == 1 && duplicate == key
+				if isUpper(key) || occurances == 0 || secondChance {
+					var newPath []string = []string{}
+					for _, v := range path {
+						newPath = append(newPath, v)
+					}
+					newPath = append(newPath, key)
+					endPaths = seekEndWithDuplicate(key, duplicate, caves, newPath, endPaths)
+				}
+			}
+		}
+	}
+	return endPaths
+}
+
+func removeDuplicateStr(strSlice []string) []string {
+	allKeys := make(map[string]bool)
+	list := []string{}
+	for _, item := range strSlice {
+		if _, value := allKeys[item]; !value {
+			allKeys[item] = true
+			list = append(list, item)
+		}
+	}
+	return list
+}
+
 func Part1() int {
 	caves := buildCaveStructure()
 	path := []string{"start"}
 	endPaths := make([][]string, 0)
 	endPaths = seekEnd("start", caves, path, endPaths)
 	return len(endPaths)
+}
+
+func Part2() int {
+	caves := buildCaveStructure()
+	results := []string{}
+	// A lot of time could be saved by checking for duplicates along the path inside the seeking funcion
+	for caveName, _ := range caves {
+		if caveName != "start" && caveName != "end" && !isUpper(caveName) {
+			path := []string{"start"}
+			endPaths := make([][]string, 0)
+			endPaths = seekEndWithDuplicate("start", caveName, caves, path, endPaths)
+			concat := []string{}
+			for _, arr := range endPaths {
+				concat = append(concat, strings.Join(arr, ","))
+			}
+			results = append(results, concat...)
+		}
+	}
+	duplicatesRemoved := removeDuplicateStr(results)
+	return len(duplicatesRemoved)
 }
